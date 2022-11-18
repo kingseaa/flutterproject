@@ -1,16 +1,18 @@
-# shopfood
-
-A new Flutter project.
-
-## Getting Started
+## Shop Food
 
 This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+---
+> This project was built using sdk: ">=2.18.0-271.7.beta <3.0.0"[Flutter releases](https://docs.flutter.dev/development/tools/sdk/releases). 
+/assets/images/flutter_version.jpg
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+# cmd flutter --version
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Some basic Git commands:
+```
+1. git clone https://github.com/kingseaa/flutterproject.git
+2. cd shopfood
+3. flutter run lib/main.dart
+```
+
+
