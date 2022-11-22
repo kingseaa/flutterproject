@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'FoodList.dart';
 
+import './screen/main_screen.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -13,24 +15,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const FoodList(),
+      initialRoute: '/',
+      routes: {
+        "/": (contenxt) => const MainScreen(),
+      },
     );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold();
   }
 }
