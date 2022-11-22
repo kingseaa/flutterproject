@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../widget/item.dart';
 
 class MainScreen extends StatelessWidget {
+  static const routeName = '/mainscreen';
   const MainScreen({super.key});
 
   Widget MenuIcon() {
@@ -169,7 +170,9 @@ class MainScreen extends StatelessWidget {
               SizedBox(
                   width: 338,
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, '/special');
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
