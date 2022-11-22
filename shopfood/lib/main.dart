@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import './screen/special_offer.dart';
 import './screen/main_screen.dart';
 
 void main() {
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         "/": (contenxt) => const MainScreen(),
+        SpecialOffer.routeName: (context) => const SpecialOffer()
       },
     );
   }

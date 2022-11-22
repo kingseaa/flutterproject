@@ -138,7 +138,9 @@ class MainScreen extends StatelessWidget {
               SizedBox(
                   width: 338,
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, "/special");
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
