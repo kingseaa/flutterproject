@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopfood/screen/login_screen.dart';
 import 'package:shopfood/screen/main_screen.dart';
+import 'package:shopfood/screen/register.dart';
 
 import './screen/special_offer.dart';
 
@@ -19,7 +20,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         LoginScreen.routeName: (contenxt) => LoginScreen(),
-        MainScreen.routeName: (contenxt) => const MainScreen(),
+        RegisterScreen.routeName: (contenxt) => RegisterScreen(),
+        MainScreen.routeName: (contenxt) => MainScreen(),
         SpecialOffer.routeName: (contenxt) => const SpecialOffer(),
       },
     );

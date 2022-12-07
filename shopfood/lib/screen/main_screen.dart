@@ -1,11 +1,53 @@
+//declare packages
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../api/listfoods.dart';
 import '../widget/item.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   static const routeName = '/mainscreen';
   const MainScreen({super.key});
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class Debouncer {
+  int? milliseconds;
+  VoidCallback? action;
+  Timer? timer;
+
+  run(VoidCallback action) {
+    if (null != timer) {
+      timer!.cancel();
+    }
+    timer = Timer(
+      const Duration(milliseconds: Duration.millisecondsPerSecond),
+      action,
+    );
+  }
+}
+
+class _MainScreenState extends State<MainScreen> {
+  ListFoods foods = ListFoods();
+
+  List<ListFoods> ulist = [];
+  List<ListFoods> userLists = [];
+  final _debouncer = Debouncer();
+
+  @override
+  void initState() {
+    super.initState();
+    foods.getAllulistList().then((subjectFromServer) {
+      setState(() {
+        ulist = subjectFromServer;
+        userLists = ulist;
+      });
+    });
+  }
 
   Widget MenuIcon() {
     return Container(
@@ -46,11 +88,25 @@ class MainScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 33),
                   child: Row(
                     children: [
-                      const Expanded(
+                      Expanded(
                         child: TextField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             border: InputBorder.none,
                           ),
+                          onChanged: (string) {
+                            print('$string string');
+                            _debouncer.run(() {
+                              setState(() {
+                                userLists = ulist
+                                    .where(
+                                      (u) => (u.name!.toLowerCase().contains(
+                                            string.toLowerCase(),
+                                          )),
+                                    )
+                                    .toList();
+                              });
+                            });
+                          },
                         ),
                       ),
                       SvgPicture.asset(
@@ -200,18 +256,24 @@ class MainScreen extends StatelessWidget {
                 height: 60,
               ),
               // Begin Item
-              Column(
-                children: const [
-                  ItemWidget(),
-                  SizedBox(
-                    height: 40,
-                  ),
-                ],
-              ),
+              SizedBox(
+                  height: 500,
+                  child: ListView.builder(
+                    clipBehavior: Clip.none,
+                    itemBuilder: (context, index) {
+                      return ItemWidget(
+                        userLists[index].name,
+                        userLists[index].img,
+                        userLists[index].price,
+                        userLists[index].discount,
+                      );
+                    },
+                    itemCount: userLists.length,
+                  )),
               // End Item
               const SizedBox(
                 height: 20,
-              )
+              ),
             ],
           ),
         ),

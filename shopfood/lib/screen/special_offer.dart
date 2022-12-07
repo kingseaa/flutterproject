@@ -20,7 +20,7 @@ class SpecialOffer extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
-            NavBar(navigatorRoute: const MainScreen()),
+            NavBar(navigatorRoute: MainScreen()),
             const SizedBox(
               height: 40,
             ),

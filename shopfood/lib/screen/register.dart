@@ -1,10 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart';
 
-class LoginScreen extends StatelessWidget {
-  static const routeName = '/';
+class RegisterScreen extends StatelessWidget {
+  static const routeName = '/register_screen';
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    var emailController = TextEditingController();
+    var passwordController = TextEditingController();
+    var repasswordController = TextEditingController();
+    Future<void> login() async {
+      if (passwordController.text.isNotEmpty &&
+          emailController.text.isNotEmpty) {
+        var response = await post(
+            Uri.parse(
+                "https://638eb0834ddca317d7e3eb4d.mockapi.io/users/login"),
+            body: ({
+              'email': emailController.text,
+              'password': passwordController.text
+            }));
+        if (response.statusCode == 201) {
+          Navigator.pushNamed(context, '/');
+          // Navigator.push(
+          //     context, MaterialPageRoute(builder: (context) => MainScreen()));
+        } else {
+          print(response.statusCode);
+          ScaffoldMessenger.of(context)
+              .showSnackBar(const SnackBar(content: Text("thong tin sai")));
+        }
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("khong de trang")));
+      }
+    }
+
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
@@ -20,10 +50,11 @@ class LoginScreen extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 50),
                   child: Column(
+                    key: formKey,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        'Log in',
+                        'Register',
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 40,
@@ -67,6 +98,7 @@ class LoginScreen extends StatelessWidget {
                                 ]),
                             height: 50,
                             child: TextFormField(
+                              controller: emailController,
                               keyboardType: TextInputType.emailAddress,
                               style: const TextStyle(color: Colors.black87),
                               decoration: const InputDecoration(
@@ -106,6 +138,7 @@ class LoginScreen extends StatelessWidget {
                                 ]),
                             height: 50,
                             child: TextFormField(
+                              controller: passwordController,
                               obscureText: true,
                               style: const TextStyle(color: Colors.black87),
                               decoration: const InputDecoration(
@@ -116,37 +149,48 @@ class LoginScreen extends StatelessWidget {
                           )
                         ],
                       ),
+                      const SizedBox(height: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const Text(
+                            'Password',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            padding:
+                                const EdgeInsets.only(left: 20, bottom: 10),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(35),
+                                boxShadow: const [
+                                  BoxShadow(
+                                      color: Colors.black26,
+                                      blurRadius: 6,
+                                      offset: Offset(0, 2))
+                                ]),
+                            height: 50,
+                            child: TextFormField(
+                              controller: repasswordController,
+                              obscureText: true,
+                              style: const TextStyle(color: Colors.black87),
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.only(top: 14),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+
                       //end password
                       const SizedBox(height: 10),
-                      //start forgotpwbtn
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        child: TextButton(
-                          onPressed: () => print('Forgot Password pressed'),
-                          child: const Text(
-                            'Forgot Password?',
-                            style: TextStyle(
-                                color: Color(0xff5ac18e),
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      //end forgotpwbtn
-                      const SizedBox(height: 10),
-                      Container(
-                        alignment: Alignment.topCenter,
-                        child: MaterialButton(
-                          onPressed: () =>
-                              Navigator.pushNamed(context, '/register_screen'),
-                          child: const Text(
-                            'Register?',
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Color(0xff5ac18e),
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
+
                       //start loginbtn
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: 25),
@@ -154,15 +198,18 @@ class LoginScreen extends StatelessWidget {
                         height: 100,
                         child: MaterialButton(
                           elevation: 5,
-                          onPressed: () =>
-                              Navigator.pushNamed(context, '/mainscreen'),
+                          // onPressed: () =>
+                          // Navigator.pushNamed(context, '/mainscreen'),
+                          onPressed: () {
+                            login();
+                          },
                           padding: const EdgeInsets.all(15),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(35),
                           ),
                           color: Colors.yellow,
                           child: const Text(
-                            'Login',
+                            'Register',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,
@@ -172,13 +219,13 @@ class LoginScreen extends StatelessWidget {
                       ),
                       //end loginbtn
 
-                      //start skipbtn
+                      //start login
                       Container(
                         alignment: Alignment.center,
-                        child: TextButton(
-                          onPressed: () => print('Skip Now pressed'),
+                        child: MaterialButton(
+                          onPressed: () => Navigator.pushNamed(context, '/'),
                           child: const Text(
-                            'Skip now',
+                            'Login now',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 20,
