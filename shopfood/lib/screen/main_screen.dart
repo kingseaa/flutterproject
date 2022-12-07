@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shopfood/FoodList.dart';
 
 import '../widget/item.dart';
 
 class MainScreen extends StatelessWidget {
+  static const routeName = '/mainscreen';
   const MainScreen({super.key});
 
   Widget MenuIcon() {
@@ -171,10 +171,7 @@ class MainScreen extends StatelessWidget {
                   width: 338,
                   child: InkWell(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const FoodList()));
+                      Navigator.pushNamed(context, '/special');
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shopfood/screen/main_screen.dart';
-import './widget/navbar.dart';
-import 'network.dart';
+import 'package:shopfood/screen/special_offer.dart';
+
+import '../api/foodModel.dart';
+import '../api/network.dart';
+import '../widget/navbar.dart';
 
 class FoodList extends StatefulWidget {
   const FoodList({super.key});
@@ -11,6 +13,7 @@ class FoodList extends StatefulWidget {
 }
 
 class _FoodListState extends State<FoodList> {
+  fetchFoods _foods = fetchFoods();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +23,7 @@ class _FoodListState extends State<FoodList> {
               margin: const EdgeInsets.only(
                   left: 39, right: 39, top: 30, bottom: 30),
               child: NavBar(
-                navigatorRoute: const MainScreen(),
+                navigatorRoute: const SpecialOffer(),
               )),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -44,13 +47,13 @@ class _FoodListState extends State<FoodList> {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height - 239,
-                  color: Color(0xffEAFFF2),
+                  color: const Color(0xffEAFFF2),
                 ),
               ),
               SizedBox(
                 height: 656,
-                child: FutureBuilder(
-                  future: fetchFoods(),
+                child: FutureBuilder<List<Food>>(
+                  future: _foods.fetchFoodss(),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (snapshot.hasData) {
                       return ListView.builder(
@@ -60,7 +63,8 @@ class _FoodListState extends State<FoodList> {
                             clipBehavior: Clip.none,
                             children: <Widget>[
                               Container(
-                                margin: EdgeInsets.only(bottom: 30, left: 30),
+                                margin:
+                                    const EdgeInsets.only(bottom: 30, left: 30),
                                 width: 317,
                                 height: 153,
                                 decoration: BoxDecoration(
@@ -150,7 +154,7 @@ class _FoodListState extends State<FoodList> {
             ],
           ),
           SizedBox(
-            height: 70,
+            height: 50,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -193,8 +197,8 @@ class CustomClipPath extends CustomClipper<Path> {
     path.lineTo(size.width * 1.002415, size.height * 0.006501837);
     path.close();
 
-    Paint paint_fill = Paint()..style = PaintingStyle.fill;
-    paint_fill.color = Color(0xffEAFFF2).withOpacity(1.0);
+    Paint paintFill = Paint()..style = PaintingStyle.fill;
+    paintFill.color = const Color(0xffEAFFF2).withOpacity(1.0);
 // canvas.drawPath(path,paint_fill);
 
     return path;

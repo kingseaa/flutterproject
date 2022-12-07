@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class BottomNav extends StatefulWidget {
   const BottomNav({super.key});
@@ -47,7 +46,7 @@ class _BottomNavState extends State<BottomNav> {
         ),
       ],
       currentIndex: _selectedIndex,
-      selectedItemColor: Color(0xff008132),
+      selectedItemColor: const Color(0xff008132),
       onTap: _onItemTapped,
     );
   }
