@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 
 class ItemWidget extends StatelessWidget {
-  const ItemWidget({super.key});
+  String? name;
+  String? price;
+  String? discount;
+  String? img;
+
+  ItemWidget(this.name, this.img, this.price, this.discount);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 338,
       height: 245,
+      margin: const EdgeInsets.symmetric(vertical: 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(21),
         color: const Color.fromARGB(255, 255, 255, 255),
@@ -36,25 +42,24 @@ class ItemWidget extends StatelessWidget {
                 borderRadius: BorderRadius.only(
                     topRight: Radius.circular(100),
                     bottomRight: Radius.circular(100))),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text(
-                    '50%',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 36,
-                        fontWeight: FontWeight.w700,
-                        fontStyle: FontStyle.normal),
-                  ),
-                  Text(
-                    'for the First\norder',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13),
-                  ),
-                ]),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Text(
+                '$discount %',
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 36,
+                    fontWeight: FontWeight.w700,
+                    fontStyle: FontStyle.normal),
+              ),
+              const Text(
+                'for the First\norder',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 13),
+              ),
+            ]),
           ),
         ),
         // image
@@ -62,7 +67,7 @@ class ItemWidget extends StatelessWidget {
             right: -90,
             top: -90,
             child: Image.asset(
-              'assets/images/nicoise_salad.png',
+              'assets$img',
               width: 350,
               height: 350,
             ))
@@ -74,17 +79,17 @@ class ItemWidget extends StatelessWidget {
             right: 16,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
+              children: [
                 Text(
-                  'Nicoise Salad',
-                  style: TextStyle(
+                  '$name',
+                  style: const TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.w600,
                       fontStyle: FontStyle.normal),
                 ),
                 Text(
-                  '\$10',
-                  style: TextStyle(
+                  '\$$price',
+                  style: const TextStyle(
                       fontSize: 23,
                       fontWeight: FontWeight.w700,
                       fontStyle: FontStyle.normal,

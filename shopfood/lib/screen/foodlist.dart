@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shopfood/screen/special_offer.dart';
 
-import './buy.dart';
+import '../api/foodModel.dart';
 import '../api/network.dart';
 import '../widget/navbar.dart';
 
@@ -13,6 +13,7 @@ class FoodList extends StatefulWidget {
 }
 
 class _FoodListState extends State<FoodList> {
+  final fetchFoods _foods = fetchFoods();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,9 +51,9 @@ class _FoodListState extends State<FoodList> {
                 ),
               ),
               SizedBox(
-                height: 520,
-                child: FutureBuilder(
-                  future: fetchFoods(),
+                height: 500,
+                child: FutureBuilder<List<Food>>(
+                  future: _foods.fetchFoodss(),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (snapshot.hasData) {
                       return ListView.builder(
@@ -61,89 +62,77 @@ class _FoodListState extends State<FoodList> {
                           return Stack(
                             clipBehavior: Clip.none,
                             children: <Widget>[
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const BuyWidget()));
-                                },
+                              Container(
+                                margin:
+                                    const EdgeInsets.only(bottom: 30, left: 30),
+                                width: 317,
+                                height: 153,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black45,
+                                      offset: Offset(2, 2),
+                                      blurRadius: 4,
+                                    ),
+                                  ],
+                                ),
                                 child: Container(
-                                  margin: const EdgeInsets.only(
-                                      bottom: 30, left: 30),
-                                  width: 317,
-                                  height: 153,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.white,
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: Colors.black45,
-                                        offset: Offset(2, 2),
-                                        blurRadius: 4,
-                                      ),
-                                    ],
-                                  ),
-                                  child: Container(
-                                    margin: const EdgeInsets.only(
-                                        left: 28, top: 10),
-                                    child: Row(
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                                width: 160,
-                                                child: Text(
-                                                    snapshot.data[index].name,
-                                                    style: const TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    ))),
-                                            SizedBox(
-                                                width: 140,
-                                                child: Text(
-                                                    snapshot.data[index].desc,
-                                                    style: const TextStyle(
-                                                        fontSize: 8,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        height: 1.6))),
-                                            Text(
-                                                '${snapshot.data[index].cal} CAL',
-                                                style: const TextStyle(
-                                                  fontSize: 8,
-                                                  fontWeight: FontWeight.w700,
-                                                )),
-                                            Positioned(
-                                              top: 30,
+                                  margin:
+                                      const EdgeInsets.only(left: 28, top: 10),
+                                  child: Row(
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                              width: 160,
                                               child: Text(
-                                                  '\$ ${snapshot.data[index].price}',
+                                                  snapshot.data[index].name,
                                                   style: const TextStyle(
-                                                      fontSize: 23,
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.w600,
+                                                  ))),
+                                          SizedBox(
+                                              width: 140,
+                                              child: Text(
+                                                  snapshot.data[index].desc,
+                                                  style: const TextStyle(
+                                                      fontSize: 8,
                                                       fontWeight:
-                                                          FontWeight.w700,
-                                                      color:
-                                                          Color(0xff59C885))),
-                                            ),
-                                          ],
-                                        ),
-                                        Positioned(
-                                          top: 15,
-                                          left: 192,
-                                          child: ClipOval(
-                                            child: Container(
-                                              width: 95,
-                                              height: 95,
-                                              color: const Color(0xffF8FFFB),
-                                            ),
+                                                          FontWeight.w400,
+                                                      height: 1.6))),
+                                          Text(
+                                              '${snapshot.data[index].cal} CAL',
+                                              style: const TextStyle(
+                                                fontSize: 8,
+                                                fontWeight: FontWeight.w700,
+                                              )),
+                                          Positioned(
+                                            top: 30,
+                                            child: Text(
+                                                '\$ ${snapshot.data[index].price}',
+                                                style: const TextStyle(
+                                                    fontSize: 23,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: Color(0xff59C885))),
+                                          ),
+                                        ],
+                                      ),
+                                      Positioned(
+                                        top: 15,
+                                        left: 192,
+                                        child: ClipOval(
+                                          child: Container(
+                                            width: 95,
+                                            height: 95,
+                                            color: const Color(0xffF8FFFB),
                                           ),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -169,18 +158,10 @@ class _FoodListState extends State<FoodList> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/');
-                    },
-                    child: SvgPicture.asset('icons/home.svg')),
+                SvgPicture.asset('icons/home.svg'),
                 SvgPicture.asset('icons/heart.svg'),
                 SvgPicture.asset('icons/cart.svg'),
-                InkWell(
-                    onTap: () {
-                      print('click!');
-                    },
-                    child: SvgPicture.asset('icons/user.svg'))
+                SvgPicture.asset('icons/user.svg')
               ],
             ),
           )
